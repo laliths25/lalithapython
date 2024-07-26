@@ -18,7 +18,7 @@ elif sample == '2':
     while True:
         print([x for x in allfile if x.endswith('.txt')])
         fname=input('enter file name')
-        if file in allfile:
+        if fname in allfile:
            file = open(fname,'r')
            print(file.read())
            break
