@@ -1,0 +1,42 @@
+import pandas as pd
+import numpy as np
+dataset=pd.read_csv("User_Data.csv")
+dataset
+##
+x=dataset.iloc[:,[2,3]].values
+y=dataset.iloc[:,4].values
+##
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.25)
+##
+from sklearn.preprocessing import StandardScaler
+sc_x=StandardScaler()
+xtrain=sc_x.fit_transform(xtrain)
+xtest=sc_x.transform(xtest)
+print(xtrain[0:10, :])
+print(xtest[0:10, :])
+#or
+print(xtrain[:])
+print(xtest[:])#for entire data
+##
+from sklearn.linear_model import LogisticRegression
+Classifier=LogisticRegression(random_state=0)
+Classifier.fit(xtrain,ytrain)
+##
+import pickle
+with open ("Logistic_model.pkl","wb") as files:
+    pickle.dump(Classifier, files)
+with open("Logistic_model.pkl","rb") as f:
+    Classifier=pickle.load(f)
+y_pred=Classifier.predict(xtest)
+y_pred
+##
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(ytest,y_pred)
+print("confusion matrix:\n" , cm)
+##
+from sklearn.metrics import accuracy_score
+print("accuracy:", accuracy_score(ytest,y_pred))
+##
+from sklearn.metrics import precision_score
+print("precision:", precision_score(ytest,y_pred))
